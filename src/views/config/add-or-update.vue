@@ -3,7 +3,7 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" label-width="80px" class="el-form">
       <el-form-item label="参数名" prop="key">
         <el-input v-model="dataForm.key" placeholder="参数名"></el-input>
       </el-form-item>
@@ -12,6 +12,16 @@
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <quill-editor  class="quill-editor" :options="editorOption"
+                        v-model="dataForm.remark"
+                        ref="QuillEditor"
+                        @blur="onEditorBlur($event)" 
+                        @focus="onEditorFocus($event)"
+                        @change="onEditorChange($event)"
+                        @ready="onEditorReady($event)">
+        </quill-editor>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -23,7 +33,15 @@
 
 <script>
   import API from '@/api'
+  import { quillEditor } from 'vue-quill-editor'
+  import 'quill/dist/quill.core.css'
+  import 'quill/dist/quill.snow.css'
+  import 'quill/dist/quill.bubble.css'
+
   export default {
+    components: {
+      quillEditor
+    },
     data () {
       return {
         visible: false,
@@ -40,6 +58,8 @@
           value: [
             { required: true, message: '参数值不能为空', trigger: 'blur' }
           ]
+        },
+        editorOption: {
         }
       }
     },
@@ -88,7 +108,30 @@
             })
           }
         })
+      },
+      onEditorBlur (editor) {
+        console.log('editor blur!', editor)
+      },
+      onEditorFocus (editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorReady (editor) {
+        console.log('editor ready!', editor)
+      },
+      onEditorChange ({ editor, html, text }) {
+        // console.log('editor change!', editor, html, text)
+        this.content = html
       }
     }
   }
 </script>
+
+<style>
+.quill-editor {
+  height: 345px;
+}
+.el-form{
+  overflow: scroll;
+}
+</style>
+

@@ -7,6 +7,7 @@ import * as config from './modules/config'
 import * as oss from './modules/oss'
 import * as schedule from './modules/schedule'
 import * as knowledgeType from './modules/knowledgeType'
+import * as knowledgeContent from './modules/knowledgeContent'
 
 export default {
   common,     // 公共
@@ -17,5 +18,6 @@ export default {
   config,     // 参数管理
   oss,        // 文件服务
   schedule,   // 定时任务
-  knowledgeType   // 知识库类型
+  knowledgeType,   // 知识库类型
+  knowledgeContent    // 知识库内容
 }

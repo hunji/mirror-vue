@@ -3,7 +3,7 @@ import requestUrl from '../requestUrl'
 import requestParam from '../requestParam'
 import isInteger from 'lodash/isInteger'
 
-// 获取参数列表
+// 获取知识类型列表
 export function list (params) {
   return request({
     url: requestUrl('/knowledge/type/list'),
@@ -12,7 +12,7 @@ export function list (params) {
   })
 }
 
-// 获取参数信息
+// 获取知识类型信息
 export function info (id) {
   return request({
     url: requestUrl('/knowledge/type/info' + (isInteger(id) ? `/${id}` : '')),
@@ -21,7 +21,7 @@ export function info (id) {
   })
 }
 
-// 添加参数
+// 添加知识类型
 export function add (params) {
   return request({
     url: requestUrl('/knowledge/type/save'),
@@ -30,7 +30,7 @@ export function add (params) {
   })
 }
 
-// 修改参数
+// 修改知识类型
 export function update (params) {
   return request({
     url: requestUrl('/knowledge/type/update'),
@@ -39,7 +39,7 @@ export function update (params) {
   })
 }
 
-// 删除参数
+// 删除知识类型
 export function del (params) {
   return request({
     url: requestUrl('/knowledge/type/delete'),

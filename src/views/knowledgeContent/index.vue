@@ -1,9 +1,11 @@
-
 <template>
     <div>
         <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+            <el-form-item >
+                <el-input v-model="dataForm.typeName" placeholder="类型" clearable></el-input>
+            </el-form-item>
             <el-form-item>
-                <el-input v-model="dataForm.typeName" placeholder="类型名称" clearable></el-input>
+                <el-input v-model="dataForm.typeName" placeholder="标题" clearable></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button @click="getDataList()">查询</el-button>
@@ -14,12 +16,16 @@
         <el-table :data="dataList" border v-loading="dataListLoading" @selection-change="selectionChangeHandle" style="width: 100%;">
             <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
             <el-table-column prop="id" header-align="center" align="center" width="80" label="ID" v-if="false"></el-table-column>
-            <el-table-column prop="typeName" header-align="center" align="center"  label="类型名称"></el-table-column>
-            <el-table-column prop="description" header-align="center" align="center"  label="描述"></el-table-column>
+            <el-table-column prop="typeId" header-align="center" align="center"  label="类型编号"></el-table-column>
+            <el-table-column prop="title" header-align="center" align="center"  label="标题"></el-table-column>
+            <el-table-column prop="brief" header-align="center" align="center"  label="简要描述"></el-table-column>
+            <el-table-column prop="userId" header-align="center" align="center"  label="提交人"></el-table-column>
+            <el-table-column prop="createDate" header-align="center" align="center"  label="创建时间"></el-table-column>
             <el-table-column fixed="right" header-align="center" align="center"  label="操作">
                 <template slot-scope="scope">
-                    <el-button  v-if="isAuth('knowledge:type:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-                    <el-button  v-if="isAuth('knowledge:type:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button  v-if="isAuth('knowledge:content:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+                    <el-button  v-if="isAuth('knowledge:content:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button  v-if="isAuth('knowledge:content:review')" type="text" size="small" >审核通过</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -63,7 +69,7 @@ export default {
         limit: this.pageSize,
         typeName: this.dataForm.typeName
       }
-      API.knowledgeType.list(params).then(({ data }) => {
+      API.knowledgeContent.list(params).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list
           this.totalPage = data.page.totalPage
@@ -106,7 +112,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        API.knowledgeType.del(ids).then(({data}) => {
+        API.knowledgeContent.del(ids).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',

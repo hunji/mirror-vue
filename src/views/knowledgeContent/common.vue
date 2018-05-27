@@ -3,11 +3,11 @@
     <div>
       <el-table :data="dataList" border v-loading="dataListLoading" style="width: 100%;">
         <el-table-column type="index" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" header-align="center" align="center" width="80" label="ID" v-show="false"></el-table-column>
-        <el-table-column prop="typeId" header-align="center" align="center"  label="类型编号"></el-table-column>
+        <el-table-column prop="id" header-align="center" align="center" width="80" label="ID" v-if="false"></el-table-column>
+        <el-table-column prop="typeName" header-align="center" align="center"  label="类型"></el-table-column>
         <el-table-column prop="title" header-align="center" align="center"  label="标题"></el-table-column>
         <el-table-column prop="brief" header-align="center" align="center"  label="简要描述"></el-table-column>
-        <el-table-column prop="userId" header-align="center" align="center"  label="提交人"></el-table-column>
+        <el-table-column prop="userName" header-align="center" align="center"  label="提交人"></el-table-column>
         <el-table-column prop="createDate" header-align="center" align="center"  label="创建时间"></el-table-column>
         <el-table-column prop="rank" header-align="center" align="center"  label="重要程度"></el-table-column>
         <el-table-column fixed="right" header-align="center" align="center"  label="操作">

@@ -8,7 +8,7 @@
   window.SITE_CONFIG['baseUrl'] = 'http://localhost:8081/mirror';
 
   // 嵌套iframe地址
-  window.SITE_CONFIG['nestIframeUrl'] = 'http://demo.renren.io/renren-fast';
+  window.SITE_CONFIG['nestIframeUrl'] = 'http://localhost:8081/mirror';
   // 嵌套iframe路由名称列表
   window.SITE_CONFIG['nestIframeRouteNameList'] = ['sql'];
 

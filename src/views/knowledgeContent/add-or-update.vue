@@ -1,8 +1,16 @@
 <template>
-  <el-dialog  :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :visible.sync="visible">
-    <el-form class="rform" :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+  <el-dialog  :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :visible.sync="visible" top="30px">
+    <el-form class="rform" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="80px">
       <el-form-item label="类型" prop="typeId">
-        <el-input v-model="dataForm.typeId" placeholder="类型名称"></el-input>
+        <!-- <el-input v-model="dataForm.typeId" placeholder="类型名称"></el-input> -->
+        <el-select v-model="dataForm.typeId" placeholder="请选择">
+          <el-option
+            v-for="item in knowledgeTypes"
+            :key="item.id"
+            :label="item.typeName"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="标题" prop="title">
         <el-input v-model="dataForm.title" placeholder="标题"></el-input>
@@ -41,11 +49,16 @@ export default {
       visible: false,
       dataForm: {
         id: 0,
-        typeId: 0,
+        typeId: '',
         title: '',
         brief: '',
         content: ''
       },
+      knowledgeTypes: [{
+        value: '选项1',
+        label: '黄金糕'
+      }
+      ],
       dataRule: {
         typeId: [
           { required: true, message: '类型名称不能为空', trigger: 'blur' }
@@ -57,6 +70,11 @@ export default {
     init (id) {
       this.dataForm.id = id || 0
       this.visible = true
+      API.knowledgeType.allInfo().then(({data}) => {
+        if (data && data.code === 0) {
+          this.knowledgeTypes = data.allTypes
+        }
+      })
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
         if (this.dataForm.id) {
@@ -77,10 +95,12 @@ export default {
         if (valid) {
           var params = {
             'id': this.dataForm.id || undefined,
-            'typeName': this.dataForm.typeName,
-            'description': this.dataForm.description
+            'typeId': this.dataForm.typeId,
+            'title': this.dataForm.title,
+            'brief': this.dataForm.brief,
+            'content': this.dataForm.content
           }
-          var tick = !this.dataForm.id ? API.knowledgeType.add(params) : API.knowledgeType.update(params)
+          var tick = !this.dataForm.id ? API.knowledgeContent.add(params) : API.knowledgeContent.update(params)
           tick.then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
@@ -105,6 +125,9 @@ export default {
 
 <style>
 .quill-editor {
-  height: 345px;
+  height: 255px;
+}
+.rform{
+  overflow-y: auto;
 }
 </style>

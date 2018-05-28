@@ -1,5 +1,5 @@
 <template>
-  <el-dialog  :title=" '详情'" :close-on-click-modal="false" :visible.sync="visible">
+  <el-dialog  :title=" '详情'" :close-on-click-modal="false" :visible.sync="visible" >
     <span v-html="dataForm.content"></span>
   </el-dialog>
 </template>

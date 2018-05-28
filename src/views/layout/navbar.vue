@@ -2,8 +2,8 @@
   <nav class="site-navbar" :class="navbarClasses">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="site-navbar__brand-lg" href="javascript:;">mirror快速开发平台</a>
-        <a class="site-navbar__brand-mini" href="javascript:;">mirror</a>
+        <a class="site-navbar__brand-lg" href="javascript:;">公共知识库</a>
+        <a class="site-navbar__brand-mini" href="javascript:;">Mirror</a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">

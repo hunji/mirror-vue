@@ -47,3 +47,12 @@ export function del (params) {
     data: requestParam(params, 'post', false)
   })
 }
+
+// 获取全部类型
+export function allInfo () {
+  return request({
+    url: requestUrl('/knowledge/type/allInfo'),
+    method: 'get',
+    params: requestParam({}, 'get')
+  })
+}

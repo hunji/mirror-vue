@@ -2,7 +2,6 @@
   <el-dialog  :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :visible.sync="visible" top="30px">
     <el-form class="rform" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="80px">
       <el-form-item label="类型" prop="typeId">
-        <!-- <el-input v-model="dataForm.typeId" placeholder="类型名称"></el-input> -->
         <el-select v-model="dataForm.typeId" placeholder="请选择">
           <el-option
             v-for="item in knowledgeTypes"
@@ -54,11 +53,7 @@ export default {
         brief: '',
         content: ''
       },
-      knowledgeTypes: [{
-        value: '选项1',
-        label: '黄金糕'
-      }
-      ],
+      knowledgeTypes: [],
       dataRule: {
         typeId: [
           { required: true, message: '类型名称不能为空', trigger: 'blur' }

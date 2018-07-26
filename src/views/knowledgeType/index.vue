@@ -13,7 +13,6 @@
         </el-form>
         <el-table border :data="dataList" v-loading="dataListLoading" @selection-change="selectionChangeHandle" style="width: 100%;">
             <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-            <el-table-column prop="id" header-align="center" align="center" label="ID" v-if="false"></el-table-column>
             <el-table-column prop="typeName" header-align="center" align="center"  label="类型名称"></el-table-column>
             <el-table-column prop="description" header-align="center" align="center"  label="描述"></el-table-column>
             <el-table-column fixed="right" header-align="center" align="center"  label="操作">

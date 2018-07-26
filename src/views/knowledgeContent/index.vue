@@ -15,7 +15,6 @@
         </el-form>
         <el-table :data="dataList" border v-loading="dataListLoading" @selection-change="selectionChangeHandle" style="width: 100%;">
             <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-            <el-table-column prop="id" header-align="center" align="center" width="80" label="ID" v-if="false"></el-table-column>
             <el-table-column prop="typeName" header-align="center" align="center"  label="类型"></el-table-column>
             <el-table-column prop="title" header-align="center" align="center"  label="标题"></el-table-column>
             <el-table-column prop="brief" header-align="center" align="center"  label="简要描述"></el-table-column>

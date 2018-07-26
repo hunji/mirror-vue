@@ -5,7 +5,7 @@
                 <el-input v-model="dataForm.typeName" placeholder="类型" clearable></el-input>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="dataForm.typeName" placeholder="标题" clearable></el-input>
+                <el-input v-model="dataForm.key" placeholder="标题" clearable></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button @click="getDataList()">查询</el-button>
@@ -23,9 +23,10 @@
             <el-table-column prop="createDate" header-align="center" align="center"  label="创建时间"></el-table-column>
             <el-table-column fixed="right" header-align="center" align="center"  label="操作">
                 <template slot-scope="scope">
+                    <el-button  v-if="isAuth('knowledge:content:info')" type="text" size="small" @click="detailHandle(scope.row.id)">查看</el-button>
                     <el-button  v-if="isAuth('knowledge:content:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
                     <el-button  v-if="isAuth('knowledge:content:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
-                    <el-button  v-if="isAuth('knowledge:content:review')" type="text" size="small" >审核通过</el-button>
+                    <el-button  v-if="isAuth('knowledge:content:review')" type="text" size="small" @click="reviewHandle(scope.row.id)">审核通过</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -34,17 +35,20 @@
         </el-pagination>
         <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="AddOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <detail-show v-if="detailVisible" ref="DetailShow" @refreshDataList="getDataList"></detail-show>
     </div>
 </template>
 
 <script>
 import API from '@/api'
 import AddOrUpdate from './add-or-update'
+import DetailShow from './detail'
 export default {
   data () {
     return {
       dataForm: {
-        typeName: ''
+        typeName: '',
+        key: ''
       },
       dataList: [],
       pageIndex: 1,
@@ -52,11 +56,13 @@ export default {
       totalPage: 0,
       dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
+      addOrUpdateVisible: false,
+      detailVisible: false
     }
   },
   components: {
-    AddOrUpdate
+    AddOrUpdate,
+    DetailShow
   },
   activated () {
     this.getDataList()
@@ -67,7 +73,8 @@ export default {
       var params = {
         page: this.pageIndex,
         limit: this.pageSize,
-        typeName: this.dataForm.typeName
+        typeName: this.dataForm.typeName,
+        key: this.dataForm.key
       }
       API.knowledgeContent.list(params).then(({ data }) => {
         if (data && data.code === 0) {
@@ -102,6 +109,13 @@ export default {
         this.$refs.AddOrUpdate.init(id)
       })
     },
+    // 详情
+    detailHandle (id) {
+      this.detailVisible = true
+      this.$nextTick(() => {
+        this.$refs.DetailShow.init(id)
+      })
+    },
     // 删除
     deleteHandle (id) {
       var ids = id ? [id] : this.dataListSelections.map(item => {
@@ -113,6 +127,30 @@ export default {
         type: 'warning'
       }).then(() => {
         API.knowledgeContent.del(ids).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      })
+    },
+
+    // 审核
+    reviewHandle (id) {
+      this.$confirm(`确定['审核通过']操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        API.knowledgeContent.review(id).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',

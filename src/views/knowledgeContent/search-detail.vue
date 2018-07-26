@@ -24,7 +24,7 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         if (this.dataForm.id) {
-          API.knowledgeContent.info(this.dataForm.id).then(({ data }) => {
+          API.knowledgeContent.searchDetail(this.dataForm.id).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm.content = data.knowledgeContent.content
               this.dataForm.title = data.knowledgeContent.title

@@ -18,8 +18,8 @@
             <el-table-column prop="description" header-align="center" align="center"  label="描述"></el-table-column>
             <el-table-column fixed="right" header-align="center" align="center"  label="操作">
                 <template slot-scope="scope">
-                    <el-button  v-if="isAuth('knowledge:type:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-                    <el-button  v-if="isAuth('knowledge:type:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button  v-if="isAuth('knowledge:type:update')" type="text" size="small" @click.native="addOrUpdateHandle(scope.row.id)">修改</el-button>
+                    <el-button  v-if="isAuth('knowledge:type:delete')" type="text" size="small" @click.native="deleteHandle(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -66,7 +66,7 @@ export default {
       API.knowledgeType.list(params).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list
-          this.totalPage = data.page.totalPage
+          this.totalPage = data.page.totalCount
         } else {
           this.dataList = []
           this.totalPage = 0

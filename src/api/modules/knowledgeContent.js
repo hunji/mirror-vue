@@ -64,3 +64,29 @@ export function review (id) {
     params: requestParam({}, 'post')
   })
 }
+
+export function search (params) {
+  return request({
+    url: requestUrl('/knowledge/content/search'),
+    method: 'get',
+    params: requestParam(params, 'get')
+  })
+}
+
+// 获取search知识内容信息
+export function searchDetail (id) {
+  return request({
+    url: requestUrl('/knowledge/content/searchDetail' + (isInteger(id) ? `/${id}` : '')),
+    method: 'get',
+    params: requestParam({}, 'get')
+  })
+}
+
+// 获取search知识内容信息
+export function titleForRemote (key) {
+  return request({
+    url: requestUrl('/knowledge/content/search/titleForRemote/' + key),
+    method: 'get',
+    params: requestParam({}, 'get')
+  })
+}

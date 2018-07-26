@@ -9,7 +9,6 @@
         <el-table-column prop="brief" header-align="center" align="center"  label="简要描述"></el-table-column>
         <el-table-column prop="userName" header-align="center" align="center"  label="提交人"></el-table-column>
         <el-table-column prop="createDate" header-align="center" align="center"  label="创建时间"></el-table-column>
-        <el-table-column prop="rank" header-align="center" align="center"  label="重要程度"></el-table-column>
         <el-table-column fixed="right" header-align="center" align="center"  label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="detailHandle(scope.row.id)">查看详情</el-button>
@@ -57,7 +56,7 @@ export default {
       API.knowledgeContent.common(params).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list
-          this.totalPage = data.page.totalPage
+          this.totalPage = data.page.totalCount
         } else {
           this.dataList = []
           this.totalPage = 0

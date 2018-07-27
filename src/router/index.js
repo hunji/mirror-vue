@@ -15,7 +15,7 @@ export default new Router({
     { path: '/404', component: _import('error/404'), name: '404', desc: '404未找到' },
     { path: '/login', component: _import('login/index'), name: 'login', desc: '登录' },
     { path: '/knowledgeSearch', component: _import('knowledgeContent/search'), name: 'knowledgeSearch', desc: '知识内容查询' },
-    { path: '/knowledgeSearchDetail', component: _import('knowledgeContent/search-detail'), name: 'knowledgeSearchDetail', desc: '知识内容详情' },
+    { path: '/knowledgeUserSearch', component: _import('knowledgeContent/user-search'), name: 'knowledgeUserSearch', desc: '用户知识内容查询' },
     {
       path: '/',
       component: _import('layout/index'),

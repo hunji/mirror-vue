@@ -9,14 +9,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button @click="getDataList()">查询</el-button>
+                <el-button @click="getDataListForButton()">查询</el-button>
             </el-form-item>
             <el-form-item>
-                <a href="http://localhost:8001/#/knowledgeSearch" target="_blank">更多</a>
+                <a href="http://localhost:8001/#/knowledgeUserSearch" target="_blank">更多</a>
             </el-form-item>
         </el-form>
         <el-table :data="dataList" v-loading="dataListLoading" style="width: 100%;" height="300">
-            <el-table-column prop="id" header-align="center" align="center" label="ID" v-if="false"></el-table-column>
             <el-table-column prop="typeName" header-align="center" align="center" width="80"  label="类型"></el-table-column>
             <el-table-column prop="title" header-align="center" align="center"   label="标题" @click="detailHandle(scope.row.id)">
               <template slot-scope="scope">
@@ -85,6 +84,10 @@ export default {
         }
         this.dataListLoading = false
       })
+    },
+    getDataListForButton () {
+      this.pageIndex = 1
+      this.getDataList()
     },
     // 每页数
     sizeChangeHandle (val) {

@@ -3,13 +3,16 @@
       <div style="display:table;margin:20px auto">
         <el-form :inline="true" :model="dataForm" >
             <el-form-item>
+               <img style="width:80%" src="~@/assets/img/title.png">
+            </el-form-item>
+            <el-form-item style="margin-top:20px;">
                 <el-select style="width:500px;" v-model="dataForm.key" filterable remote reserve-keyword allow-create default-first-option
                 placeholder="关键字" clearable :remote-method="remoteMethod" :loading="loading" @change="getDataListForButton()">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item>
+            <el-form-item  style="margin-top:20px;">
                 <el-button @click="getDataListForButton()">查询</el-button>
             </el-form-item>
         </el-form>

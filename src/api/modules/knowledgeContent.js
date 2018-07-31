@@ -90,3 +90,12 @@ export function titleForRemote (key) {
     params: requestParam({}, 'get')
   })
 }
+
+// 点赞知识内容
+export function addLikeSum (id) {
+  return request({
+    url: requestUrl('/knowledge/content//search/addLikeSum' + (isInteger(id) ? `/${id}` : '')),
+    method: 'post',
+    params: requestParam({}, 'post')
+  })
+}

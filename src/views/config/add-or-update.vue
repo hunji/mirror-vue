@@ -13,16 +13,6 @@
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <quill-editor  class="quill-editor" :options="editorOption"
-                        v-model="dataForm.remark"
-                        ref="QuillEditor"
-                        @blur="onEditorBlur($event)" 
-                        @focus="onEditorFocus($event)"
-                        @change="onEditorChange($event)"
-                        @ready="onEditorReady($event)">
-        </quill-editor>
-      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -125,13 +115,4 @@
     }
   }
 </script>
-
-<style>
-.quill-editor {
-  height: 345px;
-}
-.el-form{
-  overflow: scroll;
-}
-</style>
 

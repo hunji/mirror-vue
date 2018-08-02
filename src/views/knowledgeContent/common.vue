@@ -11,6 +11,7 @@
         <el-table-column fixed="right" header-align="center" align="center"  label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="detailHandle(scope.row.id)">查看详情</el-button>
+                    <el-button v-if="isAuth('knowledge:content:sendBack')"  type="text" size="small" @click="sendBackHandle(scope.row.id)">退回</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,6 +80,27 @@ export default {
       this.detailVisible = true
       this.$nextTick(() => {
         this.$refs.detail.init(id)
+      })
+    },
+    sendBackHandle (id) {
+      this.$confirm(`确定['退回']操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        API.knowledgeContent.sendback(id).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
       })
     }
   }

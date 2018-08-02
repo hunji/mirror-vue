@@ -65,6 +65,15 @@ export function review (id) {
   })
 }
 
+// 退回知识，重新编辑
+export function sendback (id) {
+  return request({
+    url: requestUrl('/knowledge/content/sendBack' + (isInteger(id) ? `/${id}` : '')),
+    method: 'post',
+    params: requestParam({}, 'post')
+  })
+}
+
 export function search (params) {
   return request({
     url: requestUrl('/knowledge/content/search'),

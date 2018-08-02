@@ -1,7 +1,16 @@
 <template>
-  <el-dialog  :title=" '详情'" :close-on-click-modal="false" :visible.sync="visible" >
-    <div ><p>{{dataForm.title}}</p></div>
-    <span v-html="dataForm.content"></span>
+  <el-dialog width="70%" :title=" '内容详情'" :close-on-click-modal="false" :visible.sync="visible" >
+    <div style="display:table;margin:0 auto;width:85%">
+      <div ><h2>{{dataForm.title}}</h2></div>
+      <div class="meta">
+        <span>类型：{{ dataForm.typeId}} |</span>
+        <span>创建时间 {{ dataForm.createDate }}</span>
+        <span>发布时间 {{ dataForm.reviewDate }}</span>
+        <span style="margin-left:300px;">点赞数 {{ dataForm.likeNum }}</span>
+      </div>
+      <div class="content">  简要描述：{{ dataForm.brief }} </div>
+      <span v-html="dataForm.content"></span>
+    </div>
   </el-dialog>
 </template>
 
@@ -14,7 +23,12 @@ export default {
       dataForm: {
         id: 0,
         content: '',
-        title: ''
+        title: '',
+        typeId: '',
+        createDate: '',
+        reviewDate: '',
+        state: '',
+        brief: ''
       }
     }
   },
@@ -26,8 +40,7 @@ export default {
         if (this.dataForm.id) {
           API.knowledgeContent.info(this.dataForm.id).then(({ data }) => {
             if (data && data.code === 0) {
-              this.dataForm.content = data.knowledgeContent.content
-              this.dataForm.title = data.knowledgeContent.title
+              this.dataForm = data.knowledgeContent
             }
           })
         }
@@ -36,3 +49,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.meta{
+  margin: -5px 5px 20px 10px;
+  font-size: .85em;
+  color: #828282;
+}
+.content{
+  margin: 10px;
+}
+</style>

@@ -28,7 +28,6 @@
         <el-dropdown-item command="closeCurrent">关闭当前标签页</el-dropdown-item>
         <el-dropdown-item command="closeOther">关闭其它标签页</el-dropdown-item>
         <el-dropdown-item command="closeAll">关闭全部标签页</el-dropdown-item>
-        <el-dropdown-item command="refreshCurrent">刷新当前标签页</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </el-tabs>
@@ -104,12 +103,6 @@
           this.UPDATE_CONTENT_TABS(this.$store.state.contentTabs.filter(item => item.name === this.tabActiveName))
         } else if (command === 'closeAll') {
           this.DELETE_CONTENT_TABS()
-        } else if (command === 'refreshCurrent') {
-          var tempTabName = this.tabActiveName
-          this.removeTabHandle(tempTabName)
-          this.$nextTick(() => {
-            this.$router.push({ name: tempTabName })
-          })
         }
       },
       ...mapMutations(['UPDATE_MENU_NAV_ACTIVE_NAME', 'UPDATE_CONTENT_TABS', 'UPDATE_CONTENT_TABS_ACTIVE_NAME', 'DELETE_CONTENT_TABS'])

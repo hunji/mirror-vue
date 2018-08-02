@@ -1,9 +1,14 @@
 <template>
     <div class="el-card__body">
-        <el-form :inline="true" :model="dataForm">
+        <el-form style="margin-left:40px;">
+          <el-form-item>
+               <img style="width:190px;margin-left:120px  " src="~@/assets/img/maintitle.png">
+            </el-form-item>
+        </el-form>
+        <el-form :inline="true" :model="dataForm"  style="margin-left:40px;">
             <el-form-item>
                 <el-select  style="width:400px;" v-model="dataForm.key" filterable remote reserve-keyword allow-create default-first-option
-                placeholder="关键字" clearable :remote-method="remoteMethod" :loading="loading" automatic-dropdown>
+                placeholder="请输入关键字并选择" clearable :remote-method="remoteMethod" :loading="loading" automatic-dropdown>
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
@@ -13,21 +18,19 @@
             </el-form-item>  
         </el-form>
         <div v-for="item in dataList" :key="item.id" :item="item" style="width: 100%;" height="300" v-if="item">
-          <div style="margin:10px 30px 10px">
+          <div style="margin:10px 40px">
             <a href="#" @click="detailHandle(item.id)">{{ item.title }}</a>
           </div>
         </div>
-        <div style=" position: fixed;right: 25px;line-height: 0;width: 66px;"><a style="color:#a5c145;" href="http://localhost:8001/#/knowledgeUserSearch" target="_blank">更多...</a></div>
+        <div style=" margin-left: 430px;line-height: 0;width: 66px;"><a style="color:#a5c145;" href="http://10.1.9.46:8088/#/knowledgeUserSearch" target="_blank">更多...</a></div>
         <br>
         <span v-html="detailInfo"></span>
-    <detail-show ref="DetailShow" @refreshDataList="getDataList"></detail-show>
     </div>
 </template>
 
 <script>
 import API from '@/api'
 import AddOrUpdate from './add-or-update'
-import DetailShow from './search-detail'
 export default {
   data () {
     return {
@@ -47,8 +50,7 @@ export default {
     }
   },
   components: {
-    AddOrUpdate,
-    DetailShow
+    AddOrUpdate
   },
   activated () {
     this.getDataList()
@@ -82,7 +84,14 @@ export default {
     detailHandle (id) {
       API.knowledgeContent.searchDetail(id).then(({ data }) => {
         if (data && data.code === 0) {
-          this.detailInfo = data.knowledgeContent.content
+          let showContent = ''
+          if (data.knowledgeContent.brie !== null) {
+            showContent += data.knowledgeContent.brief
+          }
+          if (data.knowledgeContent.content !== null) {
+            showContent += data.knowledgeContent.content
+          }
+          this.detailInfo = showContent
         } else {
           this.detailInfo = ''
         }

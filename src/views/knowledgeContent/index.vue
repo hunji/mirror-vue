@@ -1,9 +1,9 @@
 <template>
     <div>
         <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-            <el-form-item >
+            <!-- <el-form-item >
                 <el-input v-model="dataForm.typeName" placeholder="类型" clearable></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-input v-model="dataForm.key" placeholder="标题" clearable></el-input>
             </el-form-item>
@@ -78,7 +78,7 @@ export default {
       API.knowledgeContent.list(params).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list
-          this.totalPage = data.page.totalPage
+          this.totalPage = data.page.totalCount
         } else {
           this.dataList = []
           this.totalPage = 0

@@ -21,7 +21,7 @@
             <transition-group tag="ul" name="item">
               <div v-for="item in dataList" :key="item.id" :item="item" class="item-view" v-if="item">
                 <div class="news-item">
-                    <span class="score">{{ item.state }}</span>
+                    <span class="score">{{ item.likeNum }}</span>
                     <div class="title">
                         <a @click="detailHandle(item.id)">{{ item.title }}</a>
                         <span class="host">({{ item.userName }})</span>

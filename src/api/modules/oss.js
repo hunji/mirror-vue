@@ -1,6 +1,7 @@
 import request from '../request'
 import requestUrl from '../requestUrl'
 import requestParam from '../requestParam'
+import isInteger from 'lodash/isInteger'
 
 // 获取文件列表
 export function list (params) {
@@ -32,6 +33,15 @@ export function addConfig (params) {
 // 上传文件
 export function upload (token) {
   return requestUrl(`/sys/oss/upload?token=${token}`)
+}
+
+// 下载文件
+export function download (id) {
+  return request({
+    url: requestUrl('/sys/oss/download' + (isInteger(id) ? `/${id}` : '')),
+    responseType: 'blob',
+    params: requestParam({}, 'get')
+  })
 }
 
 // 删除文件

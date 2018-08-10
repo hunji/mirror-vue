@@ -7,7 +7,6 @@
     <el-upload
       drag
       :action="url"
-      :before-upload="beforeUploadHandle"
       :on-success="successHandle"
       multiple
       :file-list="fileList"
@@ -36,14 +35,14 @@
         this.url = API.oss.upload(this.$cookie.get('token'))
         this.visible = true
       },
-      // 上传之前
-      beforeUploadHandle (file) {
-        if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-          this.$message.error('只支持jpg、png、gif格式的图片！')
-          return false
-        }
-        this.num++
-      },
+      // // 上传之前
+      // beforeUploadHandle (file) {
+      //   if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+      //     this.$message.error('只支持jpg、png、gif格式的图片！')
+      //     return false
+      //   }
+      //   this.num++
+      // },
       // 上传成功
       successHandle (response, file, fileList) {
         this.fileList = fileList

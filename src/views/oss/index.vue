@@ -20,24 +20,37 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        width="80"
-        label="ID">
-      </el-table-column>
-      <el-table-column
         prop="url"
         header-align="center"
         align="center"
         label="URL地址">
       </el-table-column>
       <el-table-column
+        label="图片"
+        width="180">
+        
+       <template slot-scope="scope">
+        <img v-bind:src="imgUrl+scope.row.url"/>
+       </template>
+    </el-table-column>
+      <el-table-column
+        prop="name"
+        header-align="center"
+        align="center"
+        label="名称">
+      </el-table-column>
+      <el-table-column
+        prop="suffix"
+        header-align="center"
+        align="center"
+        label="后缀">
+      </el-table-column>
+      <el-table-column
         prop="createDate"
         header-align="center"
         align="center"
-        width="180"
         label="创建时间">
+        width="180"
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -81,7 +94,8 @@
         dataListLoading: false,
         dataListSelections: [],
         configVisible: false,
-        uploadVisible: false
+        uploadVisible: false,
+        imgUrl: 'http://localhost:8888/oaattach/'
       }
     },
     components: {

@@ -52,3 +52,12 @@ export function del (params) {
     data: requestParam(params, 'post', false)
   })
 }
+
+// 更新文件关联id
+export function uploadFileUpdate (params) {
+  return request({
+    url: requestUrl('/sys/oss/uploadFileUpdate'),
+    method: 'get',
+    params: requestParam(params, 'get')
+  })
+}

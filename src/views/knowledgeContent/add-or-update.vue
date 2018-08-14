@@ -23,10 +23,13 @@
           </el-form-item>
           <el-form-item label="详情" prop="content">
           <!-- <el-input v-model="dataForm.content" placeholder="详情"></el-input> -->
-            <quill-editor  class="quill-editor"
-                        v-model="dataForm.content"
-                        ref="QuillEditor">
+          <div class="quill-wrap">
+            <quill-editor class="quill-editor"
+              v-model="dataForm.content"
+              ref="QuillEditor"
+              :options="editorOption">
             </quill-editor>
+          </div>
           </el-form-item>
           </el-form>
       </el-tab-pane>
@@ -38,7 +41,7 @@
           :before-remove="beforeRemove"
           :on-remove="handleRemove"
           :file-list="fileList">
-          <el-button size="small" type="primary">点击上传</el-button>
+          <el-button size="small" v-show="btnShow" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传文件，且不超过50Mb</div>
         </el-upload>
       </el-tab-pane>
@@ -53,12 +56,11 @@
 
 <script>
 import API from '@/api'
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import { quillEditor, Quill } from 'vue-quill-editor'
+import {container, ImageExtend, QuillWatch} from 'quill-image-extend-module'
+Quill.register('modules/ImageExtend', ImageExtend)
 
-export default {
+export default{
   components: {
     quillEditor
   },
@@ -79,7 +81,33 @@ export default {
         ]
       },
       uploadUrl: API.oss.upload(this.$cookie.get('token')),
-      fileList: []
+      imgUrl: 'http://localhost:8888/oaattach/',
+      fileList: [],
+      editorOption: {
+        modules: {
+          ImageExtend: {
+            loading: true,
+            name: 'file',
+            action: API.oss.upload(this.$cookie.get('token')),
+            response: (res) => {
+              return this.imgUrl + res.url
+            }
+          },
+          toolbar: {
+            container: container,
+            handlers: {
+              'image': function () {
+                QuillWatch.emit(this.quill.id)
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    btnShow: function () {
+      return this.dataForm.id !== 0
     }
   },
   methods: {
@@ -138,7 +166,12 @@ export default {
     },
     // 获取文件
     getFiles () {
-      API.oss.list().then(({data}) => {
+      var params = {
+        page: 1,
+        limit: 100,
+        contentID: this.dataForm.id
+      }
+      API.oss.list(params).then(({data}) => {
         if (data && data.code === 0) {
           this.fileList = data.page.list
         } else {
@@ -148,7 +181,15 @@ export default {
     },
     // 上传成功后的调用函数
     handleAvatarSuccess (res, file) {
-      this.getFiles()
+      console.log(res.url)
+      // 更新文件的contentID值为当前id
+      var params = {
+        id: this.dataForm.id,
+        url: res.url
+      }
+      API.oss.uploadFileUpdate(params).then(data => {
+        this.getFiles()
+      })
     },
     // 点击文件时调用的函数
     handlePreview (file) {
@@ -173,7 +214,9 @@ export default {
     },
     // 删除前的函数
     beforeRemove (file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}?`)
+      if (file && file.status === 'success') {
+        return this.$confirm(`确定移除 ${file.name}?`)
+      }
     },
     // 删除调用函数
     handleRemove (file, fileList) {

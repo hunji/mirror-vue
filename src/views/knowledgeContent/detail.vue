@@ -1,16 +1,30 @@
 <template>
   <el-dialog width="70%" :title=" '内容详情'" :close-on-click-modal="false" :visible.sync="visible" >
-    <div style="display:table;margin:0 auto;width:85%">
-      <div ><h2>{{dataForm.title}}</h2></div>
-      <div class="meta">
-        <span>类型：{{ dataForm.typeId}} |</span>
-        <span>创建时间 {{ dataForm.createDate }}</span>
-        <span>发布时间 {{ dataForm.reviewDate }}</span>
-        <span style="margin-left:300px;">点赞数 {{ dataForm.likeNum }}</span>
-      </div>
-      <div class="content">  简要描述：{{ dataForm.brief }} </div>
-      <span v-html="dataForm.content"></span>
-    </div>
+      <el-tabs tab-position="left" value="first">
+      <el-tab-pane label="知识内容" name="first">
+        <div style="display:table;margin:0 auto;width:85%">
+          <div ><h2>{{dataForm.title}}</h2></div>
+          <div class="meta">
+            <span>类型：{{ dataForm.typeId}} |</span>
+            <span>创建时间 {{ dataForm.createDate }}</span>
+            <span>发布时间 {{ dataForm.reviewDate }}</span>
+            <span style="margin-left:300px;">点赞数 {{ dataForm.likeNum }}</span>
+          </div>
+          <div class="content">  简要描述：{{ dataForm.brief }} </div>
+          <span v-html="dataForm.content"></span>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="资料" name="second">
+        资料列表：
+        <ul>
+          <template v-for="file in fileList" >
+            <li :key="file.id" style="margin:5px;">
+              <a :href="imgUrl+file.url" target="_blank">{{file.name}}</a>
+            </li>
+          </template>
+        </ul>
+      </el-tab-pane>
+    </el-tabs>
   </el-dialog>
 </template>
 
@@ -29,7 +43,9 @@ export default {
         reviewDate: '',
         state: '',
         brief: ''
-      }
+      },
+      fileList: [],
+      imgUrl: 'http://localhost:8888/oaattach'
     }
   },
   methods: {
@@ -41,6 +57,20 @@ export default {
           API.knowledgeContent.info(this.dataForm.id).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm = data.knowledgeContent
+            }
+          })
+        }
+      })
+      this.$nextTick(() => {
+        if (this.dataForm.id) {
+          var params = {
+            page: 1,
+            limit: 100,
+            contentID: this.dataForm.id
+          }
+          API.oss.list(params).then(({ data }) => {
+            if (data && data.code === 0) {
+              this.fileList = data.page.list
             }
           })
         }

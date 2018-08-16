@@ -81,7 +81,7 @@ export default{
         ]
       },
       uploadUrl: API.oss.upload(this.$cookie.get('token')),
-      imgUrl: 'http://localhost:8888/oaattach/',
+      imgUrl: 'http://localhost:8888/oaattach',
       fileList: [],
       editorOption: {
         modules: {
